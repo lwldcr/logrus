@@ -51,6 +51,9 @@ type JSONFormatter struct {
 
 	// PrettyPrint will indent all json logs
 	PrettyPrint bool
+
+	// EscapeHtml defines escaping text or not
+	EscapeHtml bool
 }
 
 // Format renders a single log entry
@@ -113,6 +116,10 @@ func (f *JSONFormatter) Format(entry *Entry) ([]byte, error) {
 	if f.PrettyPrint {
 		encoder.SetIndent("", "  ")
 	}
+
+	// set escape manner
+	encoder.SetEscapeHTML(f.EscapeHtml)
+
 	if err := encoder.Encode(data); err != nil {
 		return nil, fmt.Errorf("failed to marshal fields to JSON, %v", err)
 	}
